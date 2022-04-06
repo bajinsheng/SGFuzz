@@ -55,3 +55,6 @@ We provide an example to compile SFuzzer with OpenSSL. Please check the document
 
 # FuzzBench integration
 SFuzzer aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SFuzzer into FuzzBench and publicize our code to facilitate reproducibility. Please refer to this repo:.
+
+# License
+This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details. 
