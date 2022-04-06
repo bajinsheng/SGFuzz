@@ -50,8 +50,8 @@ RUN git clone https://github.com/google/honggfuzz.git && \
     mv libhfnetdriver/libhfnetdriver.a /usr/lib/libhfnetdriver.a
 
 # Set up SFuzzer
-COPY --chown=ubuntu:ubuntu SFuzzer SFuzzer
-RUN cd SFuzzer && \
+RUN git clone https://github.com/bajinsheng/SFuzzer.git && \
+    cd SFuzzer && \
     ./build.sh && \
     cp libsfuzzer.a /usr/lib/libsFuzzer.a
 
@@ -113,4 +113,5 @@ RUN cd ${WORKDIR} && \
 
 
 # Run command
+# cd experiments/openssl-sfuzzer && \
 # ./apps/openssl -close_fd_mask=3 ../in-tls -- s_server -key ../key.pem -cert ../cert.pem -4 -no_anti_replay 

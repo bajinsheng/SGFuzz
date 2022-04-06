@@ -39,7 +39,7 @@ The reason is that our method is using regex match to extract all enum variables
 
 ### 3. Compile the target program
 Here, we follow the normal steps to compile the target program as what LibFuzzer does.
-Please refer to the official [LibFuzzer] (https://llvm.org/docs/LibFuzzer.html) document for more information. Then, in the linking stage, we link the SFuzzer library to the target program "```libsfuzzer.a```".
+Please refer to the official [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) document for more information. Then, in the linking stage, we link the SFuzzer library to the target program "```libsfuzzer.a```".
 ```
 clang -o a.o a.c -fsanitize=fuzzer-no-link
 clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer-no-link
@@ -51,10 +51,10 @@ clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer
 ```
 
 ## OpenSSL example
-We provide an example to compile SFuzzer with OpenSSL. Please check the document "example/openssl/Readme.md".
+We provide an example to compile SFuzzer with OpenSSL. Please refer to the document "example/openssl/Readme.md". This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
 
 # FuzzBench integration
-SFuzzer aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SFuzzer into FuzzBench and publicize our code to facilitate reproducibility. Please refer to this repo:.
+SFuzzer aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SFuzzer into FuzzBench and make our experimental code public to facilitate reproducibility. Please refer to this repo: [https://github.com/bajinsheng/SFuzzer_Fuzzbench](https://github.com/bajinsheng/SFuzzer_Fuzzbench).
 
 # License
 This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details. 

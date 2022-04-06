@@ -99,8 +99,7 @@ cd experiment/openssl-sfuzzer && \
 
 ### 10.Dockerfile
 We provide a dockerfile to run all the above commands.
-1) Netdriver needs privilege in docker.
-2) Note that SFuzzer git repo is private, so we need to clone the SFuzzer repo to the same folder as the Dockerfile before building the docker image.
+Note that Netdriver needs privilege in docker.
 ```
  docker build -t openssl .
  docker run -it --privileged openssl /bin/bash
