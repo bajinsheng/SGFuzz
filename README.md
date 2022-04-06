@@ -7,7 +7,7 @@ Please check more technical details on our paper: [https://arxiv.org/abs/2204](h
 
 
 # Usage
-## Running environment
+## Running Environment
 Linux (Tested in Ubuntu 16.04LTS)
 
 LLVM >= 6.0 (tested in LLVM 10)
@@ -16,14 +16,14 @@ Clang >= 6.0 (tested in Clang 10)
 
 Python3
 
-### 1. Build SFuzzer driver
+### 1. Build SFuzzer Driver
 Enter the root of the repository and run the following command to compile the SFuzzer driver.
 ```
 ./build.sh
 ```
 
 
-### 2. State instrumentation
+### 2. State Instrumentation
 SFuzzer needs statical instrumentation for state feedback. It is source-code level instrumentation that is independent of any compiler.
 
 1) State instrumentation:
@@ -37,7 +37,7 @@ It is not necessary but provides better results.
 The reason is that our method is using regex match to extract all enum variables for state feedback. However, sometimes, some non-enum variables are extracted as enum variables because they have the exact same variable names as some enum variables. It can be solved by some compiling tools, such as clangAST, to accurately identify the enum variables. The engineering work is left for future work.
 
 
-### 3. Compile the target program
+### 3. Compilation
 Here, we follow the normal steps to compile the target program as what LibFuzzer does.
 Please refer to the official [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) document for more information. Then, in the linking stage, we link the SFuzzer library to the target program "```libsfuzzer.a```".
 ```
@@ -45,15 +45,15 @@ clang -o a.o a.c -fsanitize=fuzzer-no-link
 clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer-no-link
 ```
 
-### 4. Run the program
+### 4. Running
 ```
 ./program
 ```
 
-## OpenSSL example
+## OpenSSL Example
 We provide an example to compile SFuzzer with OpenSSL. Please refer to the document "example/openssl/Readme.md". This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
 
-# FuzzBench integration
+# FuzzBench Integration
 SFuzzer aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SFuzzer into FuzzBench and make our experimental code public to facilitate reproducibility. Please refer to this repo: [https://github.com/bajinsheng/SFuzzer_Fuzzbench](https://github.com/bajinsheng/SFuzzer_Fuzzbench).
 
 # License
