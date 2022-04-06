@@ -50,7 +50,7 @@ clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer
 ./program
 ```
 
-## OpenSSL Example
+# OpenSSL Example
 We provide an example to compile SFuzzer with OpenSSL. Please refer to the document "example/openssl/Readme.md". This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
 
 # FuzzBench Integration
