@@ -3,7 +3,7 @@ SFuzzer (Stateful Greybox Fuzzer) is a greybox fuzzer for stateful software syst
 
 # Publication
 
-Please check more technical details on our paper: [https://arxiv.org/abs/2204](https://arxiv.org/abs/2204).
+Please check more technical details on our paper: [http://arxiv.org/abs/2204.02545](http://arxiv.org/abs/2204.02545).
 
 
 # Usage
