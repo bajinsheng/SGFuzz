@@ -1,9 +1,9 @@
-## A detailed tutorial to build SFuzzer with OpenSSL
+## A detailed tutorial to build SGFuzz with OpenSSL
 
-### 1. Build and install SFuzzer
+### 1. Build and install SGFuzz
  ```shell
-git clone https://github.com/bajinsheng/SFuzzer
-cd SFuzzer
+git clone https://github.com/bajinsheng/SGFuzz
+cd SGFuzz
 ./build.sh 
 cp libsfuzzer.a /usr/lib/libsFuzzer.a
  ```
@@ -35,7 +35,7 @@ git clone https://github.com/openssl/openssl.git openssl-sfuzzer && \
 ### 5. Instrument the state variables
 ```
 cd ../ && \
-python3 {PATH}/SFuzzer/sanitizer/State_machine_instrument.py {PATH}/openssl-sfuzzer/ -b blocked_variables.txt
+python3 {PATH}/SGFuzz/sanitizer/State_machine_instrument.py {PATH}/openssl-sfuzzer/ -b blocked_variables.txt
 ```
 The `-b` option is optional. It is used to block some variables which may not enum variables and may incur compilation fail or other issues. The list needs to be manually specified.
 
@@ -53,9 +53,9 @@ CC=clang-10 CXX=clang++-10 CFLAGS="-fsanitize=fuzzer-no-link -fsanitize=address"
     make apps/openssl
 ```
 
-### 8. Link SFuzzer
+### 8. Link SGFuzz
 Because we modifed the main function, the compilation will fail at the final link stage.
-We need to rerun this step to link SFuzzer with three new parameters: "-lsFuzzer -lhfnetdriver -lhfcommon"
+We need to rerun this step to link SGFuzz with three new parameters: "-lsFuzzer -lhfnetdriver -lhfcommon"
 ```
 clang++-10 -fsanitize=fuzzer-no-link -fsanitize=address -lsFuzzer -lhfnetdriver -lhfcommon \
         -pthread -m64 -Wa,--noexecstack -Qunused-arguments -Wall -O3 -L.   \
