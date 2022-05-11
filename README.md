@@ -1,5 +1,5 @@
-# SFuzzer: Stateful Greybox Fuzzer
-SFuzzer (Stateful Greybox Fuzzer) is a greybox fuzzer for stateful software systems built on top of [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) and involves additional feedback to facilitate exploring the state space of stateful software systems for exposing stateful bugs.
+# SGFuzz: Stateful Greybox Fuzzer
+SGFuzz (Stateful Greybox Fuzzer) is a greybox fuzzer for stateful software systems built on top of [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) and involves additional feedback to facilitate exploring the state space of stateful software systems for exposing stateful bugs.
 
 # Publication
 
@@ -16,15 +16,15 @@ Clang >= 6.0 (tested in Clang 10)
 
 Python3
 
-### 1. Build SFuzzer Driver
-Enter the root of the repository and run the following command to compile the SFuzzer driver.
+### 1. Build SGFuzz Driver
+Enter the root of the repository and run the following command to compile the SGFuzz driver.
 ```
 ./build.sh
 ```
 
 
 ### 2. State Instrumentation
-SFuzzer needs statical instrumentation for state feedback. It is source-code level instrumentation that is independent of any compiler.
+SGFuzz needs statical instrumentation for state feedback. It is source-code level instrumentation that is independent of any compiler.
 
 1) State instrumentation:
 ```
@@ -39,7 +39,7 @@ The reason is that our method is using regex match to extract all enum variables
 
 ### 3. Compilation
 Here, we follow the normal steps to compile the target program as what LibFuzzer does.
-Please refer to the official [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) document for more information. Then, in the linking stage, we link the SFuzzer library to the target program "```libsfuzzer.a```".
+Please refer to the official [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) document for more information. Then, in the linking stage, we link the SGFuzz library to the target program "```libsfuzzer.a```".
 ```
 clang -o a.o a.c -fsanitize=fuzzer-no-link
 clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer-no-link
@@ -51,10 +51,10 @@ clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer
 ```
 
 # OpenSSL Example
-We provide an example to compile SFuzzer with OpenSSL. Please refer to the document "example/openssl/Readme.md". This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
+We provide an example to compile SGFuzz with OpenSSL. Please refer to the document "example/openssl/Readme.md". This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
 
 # FuzzBench Integration
-SFuzzer aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SFuzzer into FuzzBench and make our experimental code public to facilitate reproducibility. Please refer to this repo: [https://github.com/bajinsheng/SFuzzer_Fuzzbench](https://github.com/bajinsheng/SFuzzer_Fuzzbench).
+SGFuzz aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SGFuzz into FuzzBench and make our experimental code public to facilitate reproducibility. Please refer to this repo: [https://github.com/bajinsheng/SGFuzz_Fuzzbench](https://github.com/bajinsheng/SGFuzz_Fuzzbench).
 
 # License
 This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details. 
