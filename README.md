@@ -9,9 +9,9 @@ Please check more technical details on our paper: [http://arxiv.org/abs/2204.025
 We provide a docker file to execute SGFuzz with OpenSSL. Please refer to the document [example/openssl/Readme.md](https://github.com/bajinsheng/SGFuzz/tree/master/example/openssl). This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
 
 # Artifact Evaluation
-## Our claims
-1. **State Transition Coverage**. SGFuzz significantly outperform LibFuzzer on state transition coverage. (RQ.1)
-2. **Branch Coverage**. SGFuzz slightly outperform LibFuzer on branch coverage. (RQ.2)
+## Our claims and results
+1. **State Transition Coverage**. SGFuzz covers 33x more sequences of state transitions than LibFuzzer in 23 hours on average. (RQ.1)
+2. **Branch Coverage**. SGFuzz achieves 2.20\% more branch coverage than LibFuzzer in 23 hours on average. (RQ.2)
 3. **State Identification Effectiveness**. Average 99.5% of nodes in the STT constructed in 23 hours are referring to values of actual state variables. (RQ.3)
 4. **Prevalence of Stateful Bugs**. Every four in five bugs that are reported in OSS-Fuzz for protocol implementations among our subjects are stateful. (Appendix.3)
 5. **Prevalence of State Variables**. Top-50 most widely used open-source protocol implementations define state variables with named constants. (Appendix.4)
@@ -37,7 +37,7 @@ Note that the FuzzBench framework depends on docker, so it is hard to run FuzzBe
 - Step 1: Executing this command in the root of SGFuzz_FuzzBench folder: `sudo make run-sfuzzer-h2o_h2o-fuzzer-http2`
 
 - Step 2: After prompting some building information (several minutes for the first time), the fuzzing status will be gradually output in the terminal, like this:
-```
+```shell
 #2      INITED cov: 641 ft: 642 corp: 1/12569b exec/s: 0 rss: 38Mb states: 13 leaves: 2
 #3      NEW    cov: 649 ft: 659 corp: 2/24Kb lim: 12569 exec/s: 0 rss: 39Mb states: 13 leaves: 2 L: 12569/12569 MS: 1 CopyPart-
 ```
@@ -45,12 +45,13 @@ The number of *leaves* represents the number of unique state transition sequence
 
 - Step 3: Run `sudo make run-libfuzzer-h2o_h2o-fuzzer-http2` again to get the result of LibFuzzer.
 
-- Step 4: Compare the number of *leaves* indicated in each fuzzing campaign. Note that our experiments were conducted in 23 hours, so the gap of the state transition coverage between SGFuzz and LibFuzzer will be significant after several hours.
+- Step 4: Compare the number of *leaves* indicated in each fuzzing campaign. Note that our experiments were conducted in 23 hours, so we may notice a substantial gap in state transition coverage between SGFuzz and LibFuzzer after **several hours**, not a few minutes.
 
-- Step 5: Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the command and redo steps 1-4 to evaluate other subjects.
+- Step 5: Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the command and redo steps 1-4 to evaluate other subjects. Note that the results may have a big fluctuation (Up to 50%) because of the randomness of fuzzing.
 
 2. **Branch Coverage**. 
-The same steps as the state transition coverage experiment. The only difference is that we compare the number of *cov* in the output of each fuzzing campaign.
+The same steps as the state transition coverage experiment. The branch coverage information is indicated as number of *cov* in the output. 
+Note that the results may have a fluctuation (Up to 20%) because of the randomness of fuzzing.
 
 3. **State Identification Effectiveness**. 
 Please check the folder *RQ3_State_Iden_Effic* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes all state variables and the variables that are included in the STT.
