@@ -5,8 +5,65 @@ SGFuzz (Stateful Greybox Fuzzer) is a greybox fuzzer for stateful software syste
 
 Please check more technical details on our paper: [http://arxiv.org/abs/2204.02545](http://arxiv.org/abs/2204.02545).
 
+# How to run?
+We provide a docker file to execute SGFuzz with OpenSSL. Please refer to the document [example/openssl/Readme.md](https://github.com/bajinsheng/SGFuzz/tree/master/example/openssl). This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
 
-# Usage
+# Artifact Evaluation
+## Our claims
+1. **State Transition Coverage**. SGFuzz significantly outperform LibFuzzer on state transition coverage. (RQ.1)
+2. **Branch Coverage**. SGFuzz slightly outperform LibFuzer on branch coverage. (RQ.2)
+3. **State Identification Effectiveness**. Average 99.5% of nodes in the STT constructed in 23 hours are referring to values of actual state variables. (RQ.3)
+4. **Prevalence of Stateful Bugs**. Every four in five bugs that are reported in OSS-Fuzz for protocol implementations among our subjects are stateful. (Appendix.3)
+5. **Prevalence of State Variables**. Top-50 most widely used open-source protocol implementations define state variables with named constants. (Appendix.4)
+
+## Prerequistities
+We have integrated our code into the FuzzBench framework, so the dependencies of FuzzBench are enough to evaluate our code. 
+Please refer to the following commands to install and configure the FuzzBench.
+```shell
+git clone https://github.com/bajinsheng/SGFuzz_Fuzzbench
+cd SGFuzz_Fuzzbench
+git submodule update --init
+sudo apt-get install build-essential python3.8-dev python3.8-venv
+make install-dependencies
+source .venv/bin/activate
+```
+More information about the installation of Fuzzbench can be found: [https://google.github.io/fuzzbench/getting-started/prerequisites/](https://google.github.io/fuzzbench/getting-started/prerequisites/).
+
+Note that the FuzzBench framework depends on docker, so it is hard to run FuzzBench within docker.
+
+## Steps to reproduce
+1. **State Transition Coverage**. 
+
+- Step 1: Executing this command in the root of SGFuzz_FuzzBench folder: `sudo make run-sfuzzer-h2o_h2o-fuzzer-http2`
+
+- Step 2: After prompting some building information (several minutes for the first time), the fuzzing status will be gradually output in the terminal, like this:
+```
+#2      INITED cov: 641 ft: 642 corp: 1/12569b exec/s: 0 rss: 38Mb states: 13 leaves: 2
+#3      NEW    cov: 649 ft: 659 corp: 2/24Kb lim: 12569 exec/s: 0 rss: 39Mb states: 13 leaves: 2 L: 12569/12569 MS: 1 CopyPart-
+```
+The number of *leaves* represents the number of unique state transition sequences observed in the current fuzzing campaign.
+
+- Step 3: Run `sudo make run-libfuzzer-h2o_h2o-fuzzer-http2` again to get the result of LibFuzzer.
+
+- Step 4: Compare the number of *leaves* indicated in each fuzzing campaign. Note that our experiments were conducted in 23 hours, so the gap of the state transition coverage between SGFuzz and LibFuzzer will be significant after several hours.
+
+- Step 5: Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the command and redo steps 1-4 to evaluate other subjects.
+
+2. **Branch Coverage**. 
+The same steps as the state transition coverage experiment. The only difference is that we compare the number of *cov* in the output of each fuzzing campaign.
+
+3. **State Identification Effectiveness**. 
+Please check the folder *RQ3_State_Iden_Effic* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes all state variables and the variables that are included in the STT.
+4. **Prevalence of Stateful Bugs**. 
+Please check the folder *A3_Bug_Preva* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes our analysis of existing bugs.
+5. **Prevalence of State Variables**. 
+Please check the folder *A4_Top50* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes state variable names and corresponding code locations.
+
+
+# Code Reference
+Our major implementation of the STT is here [FuzzerStateMachine.cpp](https://github.com/bajinsheng/SGFuzz/blob/master/FuzzerStateMachine.cpp)
+
+# Detailed Usage
 ## Running Environment
 Linux (Tested in Ubuntu 16.04LTS)
 
@@ -49,12 +106,6 @@ clang++ -o program a.o b.o c.o ... libsfuzzer.a -ldl -lpthread -fsanitize=fuzzer
 ```
 ./program
 ```
-
-# OpenSSL Example
-We provide an example to compile SGFuzz with OpenSSL. Please refer to the document "example/openssl/Readme.md". This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
-
-# FuzzBench Integration
-SGFuzz aims to fuzz stateful protocol programs which usually have complicated compilation steps. We also integrate SGFuzz into FuzzBench and make our experimental code public to facilitate reproducibility. Please refer to this repo: [https://github.com/bajinsheng/SGFuzz_Fuzzbench](https://github.com/bajinsheng/SGFuzz_Fuzzbench).
 
 # License
 This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details. 
