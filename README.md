@@ -54,11 +54,11 @@ The same steps as the state transition coverage experiment. The branch coverage 
 Note that the results may have a fluctuation (Up to 20%) because of the randomness of fuzzing.
 
 3. **State Identification Effectiveness**. 
-Please check the folder *RQ3_State_Iden_Effic* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes all state variables and the variables that are included in the STT.
+Please check the folder *RQ3_State_Iden_Effic* at [https://zenodo.org/record/5555955](https://zenodo.org/record/5555955), which includes all state variables and the variables that are included in the STT.
 4. **Prevalence of Stateful Bugs**. 
-Please check the folder *A3_Bug_Preva* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes our analysis of existing bugs.
+Please check the folder *A3_Bug_Preva* at [https://zenodo.org/record/5555955](https://zenodo.org/record/5555955), which includes our analysis of existing bugs.
 5. **Prevalence of State Variables**. 
-Please check the folder *A4_Top50* at [https://zenodo.org/record/5944816](https://zenodo.org/record/5944816), which includes state variable names and corresponding code locations.
+Please check the folder *A4_Top50* at [https://zenodo.org/record/5555955](https://zenodo.org/record/5555955), which includes state variable names and corresponding code locations.
 
 
 # Code Reference
