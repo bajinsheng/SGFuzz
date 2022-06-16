@@ -1,0 +1,42 @@
+diff --git a/liveMedia/GenericMediaServer.cpp b/liveMedia/GenericMediaServer.cpp
+index f4aaa8d..c265863 100755
+--- a/liveMedia/GenericMediaServer.cpp
++++ b/liveMedia/GenericMediaServer.cpp
+@@ -390,6 +390,12 @@ GenericMediaServer::lookupClientSession(char const* sessionIdStr) {
+   return (GenericMediaServer::ClientSession*)fClientSessions->Lookup(sessionIdStr);
+ }
+ 
++GenericMediaServer::ClientSession*
++GenericMediaServer::getOneClientSession(char const* sessionIdStr) {
++  return (GenericMediaServer::ClientSession*)fClientSessions->getFirst();
++}
++
++
+ ServerMediaSession* GenericMediaServer::getServerMediaSession(char const* streamName) {
+   return (ServerMediaSession*)(fServerMediaSessions->Lookup(streamName));
+ }
+diff --git a/liveMedia/RTSPServer.cpp b/liveMedia/RTSPServer.cpp
+index 21ca9de..c76e23d 100755
+--- a/liveMedia/RTSPServer.cpp
++++ b/liveMedia/RTSPServer.cpp
+@@ -764,7 +764,7 @@ void RTSPServer::RTSPClientConnection::handleRequestBytes(int newBytesRead) {
+       Boolean const requestIncludedSessionId = sessionIdStr[0] != '\0';
+       if (requestIncludedSessionId) {
+ 	clientSession
+-	  = (RTSPServer::RTSPClientSession*)(fOurRTSPServer.lookupClientSession(sessionIdStr));
++	  = (RTSPServer::RTSPClientSession*)(fOurRTSPServer.getOneClientSession(sessionIdStr));
+ 	if (clientSession != NULL) clientSession->noteLiveness();
+       }
+     
+diff --git a/liveMedia/include/GenericMediaServer.hh b/liveMedia/include/GenericMediaServer.hh
+index 3db1ff9..e7c18c4 100755
+--- a/liveMedia/include/GenericMediaServer.hh
++++ b/liveMedia/include/GenericMediaServer.hh
+@@ -154,6 +154,7 @@ protected:
+   // Lookup a "ClientSession" object by sessionId (integer, and string):
+   ClientSession* lookupClientSession(u_int32_t sessionId);
+   ClientSession* lookupClientSession(char const* sessionIdStr);
++  ClientSession* getOneClientSession(char const* sessionIdStr);
+ 
+   // An iterator over our "ServerMediaSession" objects:
+   class ServerMediaSessionIterator {

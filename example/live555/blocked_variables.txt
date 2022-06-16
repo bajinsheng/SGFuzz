@@ -1,0 +1,7 @@
+dataType
+curRecordType
+streamingMode
+type
+category
+lacingType
+fRecordType
