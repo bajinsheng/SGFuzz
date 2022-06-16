@@ -47,11 +47,10 @@ The number of *leaves* represents the number of unique state transition sequence
 
 - Step 4: Compare the number of *leaves* indicated in each fuzzing campaign. Note that our experiments were conducted in 23 hours, so we may notice a substantial gap in state transition coverage between SGFuzz and LibFuzzer after **several hours**, not a few minutes.
 
-- Step 5: Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the command and redo steps 1-4 to evaluate other subjects. Note that the results may have a big fluctuation (Up to 50%) because of the randomness of fuzzing.
+- Step 5: Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the command and redo steps 1-4 to evaluate other subjects. Our results are based on average number across 20 runs. Beware of variance! Difference between the two highest- and lowest-coverage runs may be up to 50% because of the randomness in fuzzing.
 
 2. **Branch Coverage**. 
 The same steps as the state transition coverage experiment. The branch coverage information is indicated as number of *cov* in the output. 
-Note that the results may have a fluctuation (Up to 20%) because of the randomness of fuzzing.
 
 3. **State Identification Effectiveness**. 
 Please check the folder *RQ3_State_Iden_Effic* at [https://zenodo.org/record/5555955](https://zenodo.org/record/5555955), which includes all state variables and the variables that are included in the STT.
