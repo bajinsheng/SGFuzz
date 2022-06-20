@@ -34,23 +34,42 @@ Note that the FuzzBench framework depends on docker, so it is hard to run FuzzBe
 ## Steps to reproduce
 1. **State Transition Coverage**. 
 
-- Step 1: Executing this command in the root of SGFuzz_FuzzBench folder: `sudo make run-sfuzzer-h2o_h2o-fuzzer-http2`
-
-- Step 2: After prompting some building information (several minutes for the first time), the fuzzing status will be gradually output in the terminal, like this:
+- Step 1: SGFuzz's results. Executing this command in the root of SGFuzz\_FuzzBench folder: `sudo make run-sfuzzer-h2o_h2o-fuzzer-http2`
+    After prompting some building information (several minutes for the first time), the fuzzing status will be gradually shown in the terminal, like this:
 ```shell
 #2      INITED cov: 641 ft: 642 corp: 1/12569b exec/s: 0 rss: 38Mb states: 13 leaves: 2
 #3      NEW    cov: 649 ft: 659 corp: 2/24Kb lim: 12569 exec/s: 0 rss: 39Mb states: 13 leaves: 2 L: 12569/12569 MS: 1 CopyPart-
 ```
+
 The number of *leaves* represents the number of unique state transition sequences observed in the current fuzzing campaign.
+    
+- Step 2: LibFuzzer's results. As a reference, the results of LibFuzzer have to be got manually, because of the lack of *leaves* information. We copy the generated corpus from LibFuzzer to SGFuzz, and observe the *leaves* information.
+    
+    Starting an interactive docker shell for LibFuzzer: `sudo make debug-libfuzzer-h2o_h2o-fuzzer-http2`
+    In the docker container, running the LibFuzzer: `$ROOT_DIR/docker/benchmark-runner/startup-runner.sh`
+    
+    After 23 hours, Typing 'CTRL+C' to stop the LibFuzzer. Copying the generated corpus from docker to host:
+    `sudo docker cp docker-id-libfuzzer:/out/corpus .` The *docker-id-libfuzzer* needs to be replaced by the actual hash id of the docker container. 
+    
+    Then starting a docker container for SGFuzz: `sudo make debug-sfuzzer-h2o_h2o-fuzzer-http2`
+    In the host, copying the corpus to the new docker container: `sudo docker cp corpus docker-id-sgfuzz:/out`
+    The *docker-id-sgfuzz* should be replaced by the SGFuzz's docker hash id as well.
+    
+    In the SGFuzz's docker container, running SGFuzz to observe the results: `./h2o-fuzzer-http2 corpus/`
+    In the output, the line with the *INITED* represents the total number of state transition sequences observed in LibFuzzer's campaign:
 
-- Step 3: Run `sudo make run-libfuzzer-h2o_h2o-fuzzer-http2` again to get the result of LibFuzzer.
+```shell
+#1137 INITED cov: 1456 ft: 5274 corp: 375/2703Kb exec/s: 12 rss: 340Mb states: 235 leaves: 47
+```
+    
+- Step 3: Evaluation. Comparing the number of *leaves* indicated in each fuzzing campaign. Note that our experiments were conducted in 23 hours, so we may notice a substantial gap in state transition coverage between SGFuzz and LibFuzzer after **several hours**, not a few minutes.
 
-- Step 4: Compare the number of *leaves* indicated in each fuzzing campaign. Note that our experiments were conducted in 23 hours, so we may notice a substantial gap in state transition coverage between SGFuzz and LibFuzzer after **several hours**, not a few minutes.
-
-- Step 5: Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the command and redo steps 1-4 to evaluate other subjects. Our results are based on average number across 20 runs. Beware of variance! Difference between the two highest- and lowest-coverage runs may be up to 50% because of the randomness in fuzzing.
+- Step 4: More subjects. Changing `h2o_h2o-fuzzer-http2` to `curl_curl_fuzzer`, `mbedtls_fuzz_dtlsserver`, `gstreamer_gst-discoverer` in the commands and redo steps 1-3 to evaluate other subjects.
+    
+- *Variance.* Our results are based on average number across 20 runs. Beware of variance! Difference between the two highest- and lowest-coverage runs may be up to 50\% because of the randomness in fuzzing.
 
 2. **Branch Coverage**. 
-The same steps as the state transition coverage experiment. The branch coverage information is indicated as number of *cov* in the output. 
+The same steps as the state transition coverage experiment. The only difference is that the branch coverage information can directly got from the output of LibFuzzer, so we directly run `sudo make run-libfuzzer-h2o_h2o-fuzzer-http2` instead of the step (2) in State Transition Coverage.  The branch coverage information is indicated as number of *cov* in the output. 
 
 3. **State Identification Effectiveness**. 
 Please check the folder *RQ3_State_Iden_Effic* at [https://zenodo.org/record/5555955](https://zenodo.org/record/5555955), which includes all state variables and the variables that are included in the STT.
