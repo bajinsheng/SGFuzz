@@ -17,7 +17,7 @@ We provide a docker file to execute SGFuzz with OpenSSL. Please refer to the doc
 5. **Prevalence of State Variables**. Top-50 most widely used open-source protocol implementations define state variables with named constants. (Appendix.4)
 
 ## Prerequistities
-We have integrated our code into the FuzzBench framework, so the dependencies of FuzzBench are enough to evaluate our code. 
+We have integrated our code into the FuzzBench framework, so the dependencies of FuzzBench are necessary to evaluate our code. 
 Please refer to the following commands to install and configure the FuzzBench.
 ```shell
 git clone https://github.com/bajinsheng/SGFuzz_Fuzzbench
@@ -48,7 +48,7 @@ The number of *leaves* represents the number of unique state transition sequence
     Starting an interactive docker shell for LibFuzzer: `sudo make debug-libfuzzer-h2o_h2o-fuzzer-http2`
     In the docker container, running the LibFuzzer: `$ROOT_DIR/docker/benchmark-runner/startup-runner.sh`
     
-    After 23 hours, Typing 'CTRL+C' to stop the LibFuzzer. Copying the generated corpus from docker to host:
+    After 23 hours, in the docker container, typing 'CTRL+C' to stop LibFuzzer. In the host, copying the generated corpus from docker to host:
     `sudo docker cp docker-id-libfuzzer:/out/corpus .` The *docker-id-libfuzzer* needs to be replaced by the actual hash id of the docker container. 
     
     Then starting a docker container for SGFuzz: `sudo make debug-sfuzzer-h2o_h2o-fuzzer-http2`
