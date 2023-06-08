@@ -6,7 +6,9 @@ SGFuzz (Stateful Greybox Fuzzer) is a greybox fuzzer for stateful software syste
 Please check more technical details on our paper published at Usenix Security 2022: [https://www.usenix.org/conference/usenixsecurity22/presentation/ba](https://www.usenix.org/conference/usenixsecurity22/presentation/ba).
 
 # How to run?
-We provide a docker file to execute SGFuzz with OpenSSL. Please refer to the document [example/openssl/Readme.md](https://github.com/bajinsheng/SGFuzz/tree/master/example/openssl). This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
+1. We provide a docker file to execute SGFuzz with OpenSSL. Please refer to the document [example/openssl/Readme.md](https://github.com/bajinsheng/SGFuzz/tree/master/example/openssl). This example shows how to fuzz a stateful protocol program without customized fuzzing harness.
+
+2. You can directly run SGFuzz within [FuzzBench](https://github.com/bajinsheng/SGFuzz_Fuzzbench).
 
 # Detailed Usage
 ## Running Environment
